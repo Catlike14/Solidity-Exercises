@@ -37,6 +37,11 @@ Save your changes, then, in the same directory, test it with
 forge test -vvv
 ```
 
+## Test all
+```bash
+./test.sh
+```
+
 ## Unsolved exercies
 These exercies are not solved yet because I didn't see them on [learn solidity](https://rareskills.io/learn-solidity)
 - `CodeSize`
