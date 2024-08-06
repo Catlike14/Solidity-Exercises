@@ -20,29 +20,47 @@ contract SkillsCoin {
     string public symbol;
 
     mapping(address => uint256) public balanceOf;
+    address public owner;
     uint8 public decimals;
     uint256 public totalSupply;
 
     mapping(address => mapping(address => uint256)) public allowance;
 
     constructor(string memory _name, string memory _symbol) {
-        // your code here
+        name = _name;
+        symbol = _symbol;
+        owner = msg.sender;
+        decimals = 18;
     }
 
     function mint(address to, uint256 amount) public {
-        // your code here
+        totalSupply += amount;
+        balanceOf[msg.sender] += amount;
+    }
+
+    function _transfer(address from, address to, uint256 amount) private returns (bool) {
+        require(balanceOf[from] >= amount, "Not enough money");
+        balanceOf[from] -= amount;
+        balanceOf[to] += amount;
+        return true;
     }
 
     function transfer(address to, uint256 amount) private returns (bool) {
-        // your code here
+        _transfer(msg.sender, to, amount);
     }
 
     function approve(address spender, uint256 amount) public returns (bool) {
-        // your code here
+        allowance[msg.sender][spender] = amount;
+        return true;
     }
 
     function transferFrom(address from, address to, uint256 amount) public returns (bool) {
-        // your code here
+        if (from != msg.sender) {
+            require(allowance[from][msg.sender] >= amount, "Not enough allowance");
+            allowance[from][msg.sender] -= amount;
+        }
+
+        return _transfer(from, to, amount);
     }
 }
 
@@ -51,33 +69,55 @@ contract RareCoin {
     string public symbol;
 
     mapping(address => uint256) public balanceOf;
+    address public owner;
     uint8 public decimals;
     uint256 public totalSupply;
+
+    address public skillsCoin;
 
     mapping(address => mapping(address => uint256)) public allowance;
 
     constructor(string memory _name, string memory _symbol, address _skillsCoin) {
-        // your code here
+        name = _name;
+        symbol = _symbol;
+        owner = msg.sender;
+        decimals = 18;
+        skillsCoin = _skillsCoin;
+    }
+
+    function mint(address to, uint256 amount) public {
+        revert("Cannot mint");
+    }
+
+    function _transfer(address from, address to, uint256 amount) private returns (bool) {
+        require(balanceOf[from] >= amount, "Not enough money");
+        balanceOf[from] -= amount;
+        balanceOf[to] += amount;
+        return true;
     }
 
     function transfer(address to, uint256 amount) private returns (bool) {
-        // your code here
+        _transfer(msg.sender, to, amount);
     }
 
     function approve(address spender, uint256 amount) public returns (bool) {
-        // your code here
+        allowance[msg.sender][spender] = amount;
+        return true;
     }
 
     function transferFrom(address from, address to, uint256 amount) public returns (bool) {
-        // your code here
+        if (from != msg.sender) {
+            require(allowance[from][msg.sender] >= amount, "Not enough allowance");
+            allowance[from][msg.sender] -= amount;
+        }
+
+        return _transfer(from, to, amount);
     }
 
     function trade(uint256 amount) public {
-        // some code
-        // you can pass the address of the deployed SkillsCoin contract as a parameter to the constructor of the RareCoin contract as 'source'
-        // (bool ok, bytes memory result) = source.call(abi.encodeWithSignature("transferFrom(address,address,uint256)", msg.sender, address(this), amount));
-        // this will fail if there is insufficient approval or balance
-        // require(ok, "call failed");
-        // more code
+        bytes memory transferSignature = abi.encodeWithSignature("transferFrom(address,address,uint256)", msg.sender, address(this), amount);
+        (bool ok,) = skillsCoin.call(transferSignature);
+        require(ok, "call to transferFrom failed");
+        balanceOf[msg.sender] += amount;
     }
 }
