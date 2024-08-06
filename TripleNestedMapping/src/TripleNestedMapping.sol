@@ -2,6 +2,7 @@
 pragma solidity ^0.8.13;
 
 contract TripleNestedMapping {
+    mapping(string => mapping(uint256 => mapping(uint256 => bool))) public isLoggedIn;
     /* 
         This exercise assumes you know how mappings work.
         1. Create a public TRIPLE nested mapping of 
@@ -11,10 +12,10 @@ contract TripleNestedMapping {
     */
 
     function setLogin(
-        string memory _name,
-        uint256 _password,
-        uint256 _pin
+        string memory name,
+        uint256 password,
+        uint256 pin
     ) public {
-        // your code here
+        isLoggedIn[name][password][pin] = true;
     }
 }

@@ -36,3 +36,15 @@ Save your changes, then, in the same directory, test it with
 ```
 forge test -vvv
 ```
+
+## Unsolved exercies
+These exercies are not solved yet because I didn't see them on [learn solidity](https://rareskills.io/learn-solidity)
+- `CodeSize`
+- `DeployContract`
+- `Enum`
+- `EverythingWorks`
+- `Keccak`
+- `OriginVsSender`
+- `SelfDestroyer`
+- `TypeCast`
+

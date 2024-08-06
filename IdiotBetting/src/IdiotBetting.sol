@@ -2,6 +2,17 @@
 pragma solidity ^0.8.13;
 
 contract IdiotBettingGame {
+    struct Bet {
+        uint256 amount;
+        uint256 timestamp;
+        address bidder;
+    }
+
+    Bet private highestBet;
+
+    constructor() {
+        highestBet = Bet(0, 0, address(0));
+    }
     /*
         This exercise assumes you know how block.timestamp works.
         - Whoever deposits the most ether into a contract wins all the ether if no-one 
@@ -14,10 +25,15 @@ contract IdiotBettingGame {
     */
 
     function bet() public payable {
-        // your code here
+        if (msg.value > highestBet.amount) {
+            highestBet = Bet(msg.value, block.timestamp, msg.sender);
+        }
     }
 
     function claimPrize() public {
-        // your code here
+        require(msg.sender == highestBet.bidder, "Nice try, loser!");
+        require(block.timestamp > highestBet.timestamp + 1 hours, "Nice try, champion!");
+        (bool ok,) = msg.sender.call{value: address(this).balance}("");
+        require(ok, "Cannot transfer");
     }
 }

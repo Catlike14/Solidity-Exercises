@@ -14,10 +14,20 @@ contract ReducingPayout {
     uint256 public immutable depositedTime;
 
     constructor() payable {
+        require(msg.value == 1 ether, "You must send 1 ether");
         depositedTime = block.timestamp;
     }
 
     function withdraw() public {
-        // your code here
+        uint256 secondsPassed = block.timestamp - depositedTime;
+
+        if (secondsPassed >= 1 days) {
+            return;
+        }
+
+        uint256 percentualToDeduct = secondsPassed * 0.0011574 ether / 100;
+        uint256 amount = address(this).balance - (address(this).balance * percentualToDeduct / 1 ether);
+        (bool ok,) = msg.sender.call{value: amount}("");
+        require(ok, "Cannot send");
     }
 }

@@ -11,6 +11,38 @@ contract TicTacToe {
     */
 
     function isWinning(uint8[3][3] memory board) public pure returns (bool) {
-        // your code here
+        // check rows
+        for (uint8 i = 0; i < 2; i++) {
+            if (lineIsWinning(board[i])) {
+                return true;
+            }
+        }
+
+        // check columns
+        for (uint8 i = 0; i < 2; i++) {
+            uint8[3] memory column = [board[0][i], board[1][i], board[2][i]];
+            if (lineIsWinning(column)) {
+                return true;
+            }
+        }
+
+        // check diagonals
+        if (lineIsWinning([
+            board[0][0], board[1][1], board[2][2]
+        ])) {
+            return true;
+        }
+
+        if (lineIsWinning([
+            board[0][2], board[1][1], board[2][0]
+        ])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function lineIsWinning(uint8[3] memory line) internal pure returns (bool) {
+        return (line[0] == line[1]) && (line[1] == line[2]);
     }
 }
