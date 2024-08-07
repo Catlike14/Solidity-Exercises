@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.13;
+import "forge-std/console.sol";
+
 
 contract Typecast {
     /**
@@ -7,6 +9,7 @@ contract Typecast {
      */
 
     function typeCast() external payable {
-        // your code here
+        uint256 value = uint256(uint160(address(this)));
+        require(msg.value == value, "Sender is not equal to value");
     }
 }
