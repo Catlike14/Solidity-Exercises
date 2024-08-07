@@ -18,6 +18,7 @@ contract ExampleEnum {
     }
 
     function isWeekend(uint256 index) public pure returns (bool) {
-        // your code here
+        require(index < 7, "Where do you live?");
+        return index > uint8(DayOfWeek.Friday);
     }
 }
