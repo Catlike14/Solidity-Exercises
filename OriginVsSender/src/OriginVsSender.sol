@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.13;
+import "forge-std/console.sol";
 
 contract OriginVsSender {
     /**
@@ -16,6 +17,9 @@ contract OriginVsSender {
     uint256 public number;
 
     function setNumber(uint256 num) external {
-        /// your code here
+        console.logAddress(msg.sender);
+        console.logAddress(tx.origin);
+        require(msg.sender == tx.origin, "You're not the EOA");
+        number = num;
     }
 }
