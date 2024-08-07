@@ -44,8 +44,6 @@ forge test -vvv
 
 ## Unsolved exercies
 These exercies are not solved yet because I didn't see them on [learn solidity](https://rareskills.io/learn-solidity)
-- `EverythingWorks`
-- `Keccak`
 - `OriginVsSender`
 - `SelfDestroyer`
 - `TypeCast`
